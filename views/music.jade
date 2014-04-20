@@ -1,0 +1,27 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+	h1= title
+	p#display  #{response} -Hit songs and playlists
+	div(style='margin-top:10px;display:inline-block')#ytplayer
+	hr
+	#song_list(style='display:inline-block')
+		if(song_list.length<1)
+			-	var artist = response;
+			p. 
+				Oops!! Youtube does not have a Music mix for this artist, how about we take you to their
+				<a href='https://www.youtube.com/results?search_query=#{artist}'>videos!</a>
+		else    
+			ul#grid(style='display:inline-block')
+				each song in song_list
+					-   var split_check = song.link_to.split("/")[1].split("?")[0];
+					-   var split_song;
+					-   if(split_check == "watch"){split_song ="/"+ song.link_to.split("=")[1].split("&")[0];}
+					-   else{split_song ="?"+ song.link_to.split("?")[1];}
+					- console.log("split song",split_song)
+					li
+						p#sname=song.song_name
+						iframe#ytplayer(style='width:339px;height:213px;display:inline-block',frameborder="0", allowfullscreen,src='http://www.youtube.com/embed'+split_song)
